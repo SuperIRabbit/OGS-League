@@ -46,7 +46,7 @@ def results(url):
         url = data["next"]
         
 def tournament_users(tournament_id):
-    url = "https://online-go.com/api/v1/tournaments/{}/players/?format=json".format(tournament_id)
+    url = "https://online-go.com/api/v1/tournaments/{}/players/?ordering=player&format=json".format(tournament_id)
     for r in results(url):
         yield r["player"]
 
