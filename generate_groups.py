@@ -61,6 +61,8 @@ if __name__ == "__main__":
         
     fGroups = codecs.open("grouping.txt", "w", "utf-8");
     fHtml = codecs.open("grouping.html", "w", "utf-8");
+    fGroupNames = codecs.open("group_names.txt.", "w", "utf-8");
+    fGroupPlayers = codecs.open("group_players.txt.", "w", "utf-8");
     iNumAssigned = 0
     
     
@@ -170,10 +172,12 @@ if __name__ == "__main__":
         iNameTier = chr(ord('A') + iCurrentTier - 1);
         
         if iCurrentTier == 1:
-            fHtml.writelines("\t\t<th colspan=7>Group A</th>")
+            fHtml.writelines("\t\t<th colspan=7>Group A</th>");
+            fGroupNames.writelines("A\n");
         else:
             for c in range(nGroups):
                 fHtml.writelines("\t\t<th colspan=7>Group %c%d</th>" % (iNameTier, c + 1));        
+                fGroupNames.writelines("%c%d\n" % (iNameTier, c + 1))
         fHtml.writelines("\n\t</tr>\n")
         
         fHtml.writelines("\t<tr>\n");
@@ -185,6 +189,12 @@ if __name__ == "__main__":
         for r in range(nRows):
             fHtml.writelines("\t<tr>\n");
             for c in range(nGroups):
+                if r < len(iGroups[c]):
+                    if iCurrentTier == 1:
+                        fGroupPlayers.writelines("A\t%d\n" % (iCurrentIDs[iGroups[c][r][1][0]]));
+                    else:
+                        fGroupPlayers.writelines("%c%d\t%d\n" % (iNameTier, c + 1, iCurrentIDs[iGroups[c][r][1][0]]));
+                
                 fHtml.writelines("\t\t<td>")
                 if r < len(iGroups[c]):
                     fHtml.writelines("%d" % (iGroups[c][r][0] + 1));
@@ -233,5 +243,7 @@ if __name__ == "__main__":
         iCurrentTier += 1;
         iSlot *= 2;
     
+    fGroupPlayers.close();
+    fGroupNames.close();
     fGroups.close();
     fHtml.close();
